@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome, <%= username %>!</h1>
+    <form action="/logout" method="post">
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
+    <h2>Articles</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Body</th>
+                <th>Likes</th>
+                <th>Views</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% articles.forEach(article => { %>
+                <tr>
+                    <td><%= article.title %></td>
+                    <td><%= article.author %></td>
+                    <td><%= article.body %></td>
+                    <td id="likes-<%= article.id %>"><%= article.likes %></td>
+                    <td id="views-<%= article.id %>"><%= article.views %></td>
+                    <td>
+                        <form action="/update/<%= article.id %>/like?userId=<%= userId %>" method="post" style="display:inline;">
+                            <button type="submit" class="action-button">Like</button>
+                        </form>
+                        <form action="/update/<%= article.id %>/view?userId=<%= userId %>" method="post" style="display:inline;">
+                            <button type="submit" class="action-button">View</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <h2>Notifications</h2>
+    <% if (notifications.length > 0) { %>
+        <ul>
+            <% notifications.forEach(notification => { %>
+                <li>Article ID <%= notification.article_id %> was liked at <%= notification.timestamp %></li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No new notifications.</p>
+    <% } %>
+</body>
+</html>
